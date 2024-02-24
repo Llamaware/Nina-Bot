@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Guild {
+  id         String @id
+  name       String
+  embedColor String @default("#c285fe")
+  prefix     String @default("n!")
+  welcChannel String?
+  Users      User[]
+}
+
+model User {
+  id       String    @id
+  Notes    Note[]
+  Warnings Warning[]
+  Bans     Ban[]
+  Guild    Guild     @relation(fields: [guildId], references: [id])
+  guildId  String
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  reason    String
+  createdAt DateTime @default(now())
+  userId    String
+  User      User     @relation(fields: [userId], references: [id])
+  author    String
+}
+
+model Warning {
+  id        Int      @id @default(autoincrement())
+  reason    String?
+  createdAt DateTime @default(now())
+  userId    String
+  User      User     @relation(fields: [userId], references: [id])
+  author    String
+}
+
+model Ban {
+  id        Int      @id @default(autoincrement())
+  reason    String?
+  createdAt DateTime @default(now())
+  revoked   Boolean
+  userId    String
+  User      User     @relation(fields: [userId], references: [id])
+  author    String
+}

@@ -49,6 +49,16 @@ module.exports = {
 
 		const reason =
 			interaction.options.getString("reason") || "No reason provided";
+		
+		// Add the ban to prisma
+		await client.prisma.ban.create({
+			data: {
+				userId: banUser.id,
+				reason: reason,
+				author: interaction.user.tag,
+				revoked: false,
+			},
+		});
 
 		const dmEmbed = new EmbedBuilder()
 			.setColor(config.color)

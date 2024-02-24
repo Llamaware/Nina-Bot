@@ -1,5 +1,10 @@
-const { Client, Collection, Events, GatewayIntentBits, Options} = require("discord.js");
-const config = require("./config.json");
+const { PrismaClient } = require("@prisma/client");
+const { Client, Collection, Events, GatewayIntentBits, Options } = require("discord.js");
+require('dotenv').config();
+const token = process.env.TOKEN;
+
+const prisma = new PrismaClient();
+module.exports = { prisma };
 
 const client = new Client({
 	closeTimeout: 3_000,
@@ -39,27 +44,20 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.cooldowns = new Collection();
 client.logger = require('./Utils/logger');
+client.prisma = prisma;
 
-["commands", "events"].forEach(handler => {
-	require(`./handlers/${handler}`)(client);
-});
-
-// handle slash commands
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		return;
-	}
-
+(async () => {
 	try {
-		await command.execute(interaction, client);
+		client.logger.log("Connecting to database...", "info");
+		await client.prisma.$connect();
+		client.logger.log("Connected to database.", "info");
 	} catch (error) {
 		client.logger.log(error, "error");
 	}
+})();
+
+["commands", "events"].forEach(handler => {
+	require(`./handlers/${handler}`)(client);
 });
 
 client.on('error', error => client.logger.log(error, "error"));
@@ -70,4 +68,4 @@ process.on('uncaughtException', error => {
 	client.logger.log("Uncaught Exception is detected, restarting...", "info");
 	process.exit(1);
 });
-client.login(config.token).catch((err) => { client.logger.log(err, "error") });
+client.login(token).catch((err) => { client.logger.log(err, "error") });

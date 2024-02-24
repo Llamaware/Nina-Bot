@@ -45,6 +45,25 @@ module.exports = {
 			});
 		});
 
+		//find all bans for the user that are marked as not revoked, and revoke them
+		const userBans = await client.prisma.ban.findMany({
+			where: {
+				userId: unbanUser.id,
+				revoked: false,
+			},
+		});
+		
+		for (const ban of userBans) {
+			await client.prisma.ban.update({
+				where: {
+					id: ban.id,
+				},
+				data: {
+					revoked: true,
+				},
+			});
+		}
+
 		const msgEmbed = new EmbedBuilder()
 			.setColor(config.color)
 			.setDescription(`**${unbanUser.tag}** has been unbanned from the server`);
