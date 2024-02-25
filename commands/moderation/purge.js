@@ -1,5 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField, ChannelType, Embed, ActionRow } = require('discord.js');
-const config = require('../../config.json');
+const { SlashCommandBuilder, PermissionsBitField, ChannelType, Embed, ActionRow } = require('discord.js');
 
 module.exports = {
 	category: "Moderation",

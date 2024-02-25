@@ -1,5 +1,13 @@
-const config = require('../config.json');
-
 module.exports = async (client, guild) => {
-	client.settings.ensure(guild.id, { prefix: config.prefix });
+
+	const guildData = await client.prisma.guild.findUnique({
+		where: {
+			id: guild.id,
+		},
+		select: {
+			prefix: true,
+		},
+	});
+	
+	client.settings.ensure(guild.id, { prefix: guildData.prefix });
 };

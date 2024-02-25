@@ -1,5 +1,4 @@
 const {EmbedBuilder, SlashCommandBuilder} = require('discord.js');
-const config = require('../../config.json');
 const packageJSON = require("../../package.json");
 const discordJSVersion = packageJSON.dependencies["discord.js"];
 const timezone = require("moment-timezone");
@@ -21,13 +20,22 @@ module.exports = {
 			content: "I do not have the **MESSAGE_EMBED_LINKS** permission in this channel.\nPlease enable it."
 		});
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		try {
 			const duration = moment.duration(client.uptime).format("**D [D], H [H], m [M], s [S]**");
 
 			const embed = new EmbedBuilder()
 				.setTitle(`⚙ • System Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
-				.setColor(config.color)
+				.setColor(guildData.embedColor)
 				.setDescription(`
 \`\`\`asciidoc
 • Platform - Arch     :: ${process.platform} - ${process.arch}
@@ -49,7 +57,7 @@ module.exports = {
 		} catch (e) {
 			const embed = new EmbedBuilder()
 				.setDescription(`${e}`)
-				.setColor(config.color)
+				.setColor(guildData.embedColor)
 			interaction.reply({ embeds: [embed] })
 		}
 	}

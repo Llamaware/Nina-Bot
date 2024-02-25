@@ -1,6 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const config = require('../../config.json');
-const timezone = require("moment-timezone");
 
 module.exports = {
 	category: "Moderation",

@@ -3,7 +3,6 @@ const {
 	EmbedBuilder,
 	PermissionsBitField,
 } = require("discord.js");
-const config = require('../../config.json');
 
 module.exports = {
 	category: "Moderation",
@@ -47,12 +46,21 @@ module.exports = {
 		const reason =
 			interaction.options.getString("reason") || "No reason provided";
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const dmEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(`You have been kicked from **${interaction.guild.name}**\n**Reason:** ${reason}`)
 
 		const msgEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(`**${kickUser.tag}** has been kicked from the server\n**Reason:** ${reason}`)
 
 		await kickMember.send({ embeds: [dmEmbed] }).catch(err => {

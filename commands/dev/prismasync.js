@@ -3,7 +3,6 @@ const {
 	EmbedBuilder,
 	PermissionsBitField,
 } = require("discord.js");
-const config = require('../../config.json');
 
 module.exports = {
 	category: "Moderation",

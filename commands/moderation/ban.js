@@ -3,7 +3,6 @@ const {
 	EmbedBuilder,
 	PermissionsBitField,
 } = require("discord.js");
-const config = require('../../config.json');
 
 module.exports = {
 	category: "Moderation",
@@ -60,8 +59,17 @@ module.exports = {
 			},
 		});
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const dmEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(
 				`You have been banned from **${interaction.guild.name}**\n**Reason:** ${reason}`
 			);
@@ -79,7 +87,7 @@ module.exports = {
 		});
 
 		const msgEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(
 				`**${banUser.tag}** has been banned from the server\n**Reason:** ${reason}`
 			);

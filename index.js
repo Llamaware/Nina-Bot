@@ -51,21 +51,21 @@ client.prisma = prisma;
 		client.logger.log("Connecting to database...", "info");
 		await client.prisma.$connect();
 		client.logger.log("Connected to database.", "info");
+
+		["commands", "events"].forEach(handler => {
+			require(`./handlers/${handler}`)(client);
+		});
+		
+		client.on('error', error => client.logger.log(error, "error"));
+		client.on('warn', info => client.logger.log(info, "warn"));
+		process.on('unhandledRejection', error => client.logger.log("UNHANDLED_REJECTION\n" + error, "error"));
+		process.on('uncaughtException', error => {
+			client.logger.log("UNCAUGHT_EXCEPTION\n" + error, "error");
+			client.logger.log("Uncaught Exception is detected, restarting...", "info");
+			process.exit(1);
+		});
+		client.login(token).catch((err) => { client.logger.log(err, "error") });
 	} catch (error) {
 		client.logger.log(error, "error");
 	}
 })();
-
-["commands", "events"].forEach(handler => {
-	require(`./handlers/${handler}`)(client);
-});
-
-client.on('error', error => client.logger.log(error, "error"));
-client.on('warn', info => client.logger.log(info, "warn"));
-process.on('unhandledRejection', error => client.logger.log("UNHANDLED_REJECTION\n" + error, "error"));
-process.on('uncaughtException', error => {
-	client.logger.log("UNCAUGHT_EXCEPTION\n" + error, "error");
-	client.logger.log("Uncaught Exception is detected, restarting...", "info");
-	process.exit(1);
-});
-client.login(token).catch((err) => { client.logger.log(err, "error") });

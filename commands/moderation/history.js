@@ -1,5 +1,4 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const config = require('../../config.json');
 const timezone = require("moment-timezone");
 
 module.exports = {
@@ -46,11 +45,20 @@ module.exports = {
 
 		console.log(notes, warnings, bans);
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		// pain
 
 		// create an embed with the user's notes
 		const notesEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setTitle(`Notes for ${user.tag}`)
 
 		if (notes.length === 0) {
@@ -66,7 +74,7 @@ module.exports = {
 
 		// create an embed with the user's warnings
 		const warningsEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setTitle(`Warnings for ${user.tag}`)
 
 		if (warnings.length === 0) {
@@ -81,7 +89,7 @@ module.exports = {
 
 		// create an embed with the user's bans
 		const bansEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setTitle(`Bans for ${user.tag}`)
 
 		if (bans.length === 0) {

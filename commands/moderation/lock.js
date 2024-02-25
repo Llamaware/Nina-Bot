@@ -1,5 +1,4 @@
 const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField, ChannelType } = require('discord.js');
-const config = require('../../config.json');
 
 module.exports = {
 	category: "Moderation",
@@ -22,8 +21,17 @@ module.exports = {
 		let channel = interaction.options.getChannel('channel');
 		channel.permissionOverwrites.edit(interaction.guild.id, { SendMessages: false });
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const embed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(`🔒 ${channel} has been locked`);
 
 		await interaction.reply({ embeds: [embed] });

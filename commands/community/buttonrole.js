@@ -7,8 +7,6 @@ const {
 	EmbedBuilder,
 } = require("discord.js");
 
-const config = require("../../config.json");
-
 module.exports = {
 	category: "Community",
 	// cooldown: 5,
@@ -33,8 +31,18 @@ module.exports = {
 				.setCustomId('18plus'),
 		);
 
+		// pull the color from prisma
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const embed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setTitle('Reaction Roles')
 			.setDescription('Press the button to get the role. If you want to remove the role, press the button again.');
 

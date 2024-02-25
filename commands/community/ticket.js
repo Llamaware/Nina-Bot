@@ -4,11 +4,9 @@ const {
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonStyle,
-	ChannelType,
-	ButtonInteraction,
 	PermissionsBitField,
 } = require("discord.js");
-const config = require('../../config.json');
+
 module.exports = {
 	category: "Community",
 	cooldown: 5,
@@ -36,8 +34,18 @@ module.exports = {
 				.setStyle(ButtonStyle.Secondary)
 		);
 
+		// pull the color from prisma
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const embed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setTitle("Tickets & Support")
 			.setDescription("Click the button below to create a ticket");
 

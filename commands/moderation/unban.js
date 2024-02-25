@@ -3,7 +3,6 @@ const {
 	EmbedBuilder,
 	PermissionsBitField,
 } = require("discord.js");
-const config = require('../../config.json');
 
 module.exports = {
 	category: "Moderation",
@@ -64,8 +63,17 @@ module.exports = {
 			});
 		}
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		const msgEmbed = new EmbedBuilder()
-			.setColor(config.color)
+			.setColor(guildData.embedColor)
 			.setDescription(`**${unbanUser.tag}** has been unbanned from the server`);
 
 		await interaction.reply({ embeds: [msgEmbed] });

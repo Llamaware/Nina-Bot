@@ -1,5 +1,4 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const config = require('../../config.json');
 const timezone = require("moment-timezone");
 
 module.exports = {
@@ -18,13 +17,22 @@ module.exports = {
 			fetchReply: true,
 		});
 
+		const guildData = await client.prisma.guild.findUnique({
+			where: {
+				id: interaction.guild.id,
+			},
+			select: {
+				embedColor: true,
+			},
+		});
+
 		interaction.editReply({ content: 'Pinging...' });
 
 		try {
 			const embed = new EmbedBuilder()
 				.addFields({ name: '⏳ Latency', value: `_**${m.createdTimestamp - interaction.createdTimestamp}ms**_`, inline: true })
 				.addFields({ name: '💓 API', value: `_**${client.ws.ping}ms**_`, inline: true })
-				.setColor(config.color)
+				.setColor(guildData.embedColor)
 				.setFooter({
 					text: `Requested by ${interaction.user.username} | Today at ${timezone.tz("America/Chicago").format("HH:mma") + " "}`, iconURL: interaction.user.displayAvatarURL({
 						forceStatic: true
@@ -36,7 +44,7 @@ module.exports = {
 		} catch (e) {
 			const embed = new EmbedBuilder()
 				.setDescription(`${e}`)
-				.setColor(config.color)
+				.setColor(guildData.embedColor)
 			interaction.editReply({ embeds: [embed] })
 		}
 	}
