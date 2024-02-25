@@ -1,4 +1,5 @@
-module.exports = async (client, guild) => {
+module.exports = async (client, member) => {
+
 	//check if the user is in the database
 	const user = await client.prisma.user.findUnique({
 		where: {
@@ -15,7 +16,7 @@ module.exports = async (client, guild) => {
 	await client.prisma.user.create({
 		data: {
 			id: member.id,
-			guildId: guild.id,
+			guildId: member.guild.id,
 		},
 	});
 };

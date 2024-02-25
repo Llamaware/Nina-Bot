@@ -21,6 +21,9 @@ config.json
 dist
 dist-docs
 
+#danger
+wipedb.js
+
 # Miscellaneous
 .tmp
 .vscode/*
