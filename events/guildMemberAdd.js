@@ -8,7 +8,7 @@ module.exports = async (client, member) => {
 	});
 
 	if (user) {
-		client.logger.log(`${member.user.tag} joined the server - they are already in the database`, info);
+		client.logger.log(`${member.user.tag} joined the server - they are already in the database`, "info");
 		return;
 	}
 
