@@ -49,6 +49,7 @@ module.exports = {
 			.setTitle("Tickets & Support")
 			.setDescription("Click the button below to create a ticket");
 
-		await interaction.reply({ embeds: [embed], components: [button] });
+		await interaction.channel.send({ embeds: [embed], components: [button] });
+		await interaction.reply({ content: "Ticket Embed Created!", ephemeral: true });
 	},
 };

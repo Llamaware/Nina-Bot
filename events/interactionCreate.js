@@ -13,24 +13,14 @@ module.exports = async (client, interaction) => {
 				await interaction.reply({ content: `Gave you the ${role.name} role`, ephemeral: true });
 			}
 		} else if (interaction.customId == "ticket") {
-			const button = new ActionRowBuilder().addComponents(
-				new ButtonBuilder()
-					.setCustomId("ticket")
-					.setEmoji("✉️")
-					.setLabel("Create Ticket")
-					.setStyle(ButtonStyle.Secondary)
-					.setDisabled(true)
-			);
-
-			//pull color from prisma
-			const color = await client.prisma.guild.findUnique({
-				where: {
-					id: interaction.guild.id,
-				},
-				select: {
-					embedColor: true,
-				},
-			});
+			// see if the user has a ticket already
+			const ticketChannel = interaction.guild.channels.cache.find(channel => channel.name === `ticket-${interaction.user.username}`);
+			if (ticketChannel) {
+				return interaction.reply({
+					content: `You already have a ticket open in ${ticketChannel}.`,
+					ephemeral: true
+				});
+			}
 
 			// pull ticket category from prisma
 			const guildData = await client.prisma.guild.findUnique({
@@ -56,14 +46,45 @@ module.exports = async (client, interaction) => {
 				ViewChannel: false,
 				SendMessages: false,
 			});
+			//give the bot permission to ping @everyone in the channel
+			channel.permissionOverwrites.create(interaction.guild.members.me, {
+				ViewChannel: true,
+				SendMessages: true,
+				MentionEveryone: true,
+			});
+
+			let chosenQuote;
+
+			const random = Math.random();
+			if (random <= 0.1) {
+				// 10% chance
+				chosenQuote = "hjo iou shu' b' aereshi' 'sh da 'iver";
+			} else if (random <= 0.30) {
+				// 20% chance
+				chosenQuote = "Seagull eat fish. But fish belong to Mafia. Mafia punch seagull for not respecting Mafia. Seagull say 'No, please! I have child!' Mafia punch seagull with child.";
+			} else if (random <= 0.50) {
+				// 20% chance
+				chosenQuote = "Sister 'complex'... really? I find it quite simple. - Virus.Dos.OneHalf, 2023";
+			} else if (random <= 0.75) {
+				// 25% chance 
+				chosenQuote = "whatever OneHalf's quote is, it's probably better than this one.";
+			} else if (random <= 1) {
+				// 25% chance
+				chosenQuote = "Higher beings, these words are for you alone.";
+			}
 
 			channel.send({
-				content: `Welcome to the end of the simulation, ${interaction.user}. leave now before it's too late`,
+				content: chosenQuote
 			});
 
 			interaction.reply({
 				content: `Your ticket within ${interaction.guild.name} has been created. You can view it in ${channel}.`,
 				ephemeral: true
+			});
+
+			//follow up message pinging @everyone in the channel
+			channel.send({
+				content: `@everyone, a ticket has been created.`,
 			});
 
 		}

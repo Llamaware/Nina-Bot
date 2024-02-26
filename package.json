@@ -1,9 +1,14 @@
 {
   "name": "ninabot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "scripts": {
-    "test": "node ."
+    "test": "dotenv -e .env.dev -- node index.js",
+    "start": "dotenv -e .env.prod -- node index.js",
+    "deploy": "dotenv -e .env.prod node deploy-commands-prod.js",
+	"deploy-dev": "dotenv -e .env.dev node deploy-commands-dev.js",
+    "migrate-dev": "dotenv -e .env.dev -- npx prisma migrate dev --name dev",
+    "migrate-prod": "dotenv -e .env.prod -- npx prisma migrate dev --name prod"
   },
   "author": "Thefonze7",
   "license": "ISC",
@@ -16,6 +21,7 @@
     "discord-api-types": "^0.37.70",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.3.0",
     "moment": "^2.30.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.45"

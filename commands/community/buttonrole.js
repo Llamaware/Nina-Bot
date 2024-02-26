@@ -46,6 +46,7 @@ module.exports = {
 			.setTitle('Reaction Roles')
 			.setDescription('Press the button to get the role. If you want to remove the role, press the button again.');
 
-		await interaction.reply({ embeds: [embed], components: [button] });
+		await interaction.channel.send({ embeds: [embed], components: [button] });
+		await interaction.reply({ content: "The role select message has been sent.", ephemeral: true });
 	},
 };

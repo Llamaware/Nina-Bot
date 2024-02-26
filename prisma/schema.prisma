@@ -15,13 +15,14 @@ datasource db {
 }
 
 model Guild {
-  id          String  @id
-  name        String
-  embedColor  String  @default("#c285fe")
-  prefix      String  @default("n!")
-  welcChannel String?
-  ticketCat   String?
-  Users       User[]
+  id                String  @id
+  name              String
+  embedColor        String  @default("#c285fe")
+  prefix            String  @default("n!")
+  welcChannel       String?
+  ticketCat         String?
+  transcriptChannel String?
+  Users             User[]
 }
 
 model User {

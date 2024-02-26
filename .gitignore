@@ -13,6 +13,8 @@ pids
 
 # Env
 .env
+.env.dev
+.env.prod
 
 #Config
 config.json
