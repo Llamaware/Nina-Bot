@@ -1,15 +1,16 @@
 const { Events, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChannelType } = require("discord.js");
 module.exports = async (client, interaction) => {
 	if (interaction.isButton()) {
-
 		// if the customId is "Mod Developer", "Tool Developer", or "Totally Normal Role"
 		if (interaction.customId == "Mod Developer" || interaction.customId == "Tool Developer" || interaction.customId == "Totally Normal Role") {
 			const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
-			if (roles.cache.has(role.id)) {
-				await member.roles.remove(role);
+			if (interaction.member.roles.cache.has(role.id)) {
+				client.logger.log(`Removing the ${role.name} role from ${interaction.user.tag}`, "info");
+				await interaction.member.roles.remove(role);
 				await interaction.reply({ content: `Removed the ${role.name} role`, ephemeral: true });
 			} else {
-				await member.roles.add(role);
+				client.logger.log(`Giving the ${role.name} role to ${interaction.user.tag}`, "info");
+				await interaction.member.roles.add(role);
 				await interaction.reply({ content: `Gave you the ${role.name} role`, ephemeral: true });
 			}
 		} else if (interaction.customId == "ticket") {
