@@ -20,7 +20,7 @@ const client = new Client({
 		GatewayIntentBits.MessageContent
 	],
 	allowedMentions: {
-		parse: ["users"],
+		parse: ["roles", "users"],
 		repliedUser: true
 	},
 	makeCache: Options.cacheWithLimits({

@@ -110,7 +110,7 @@ module.exports = {
 			});
 
 			// reply to the interaction ephemeraly, confirming the message was sent
-			await interaction.reply({ content: `Sent confirmation message`, ephemeral: true });
+			
 
 			// Send the user an embed message with the confirmation button
 			const embed = new EmbedBuilder()
@@ -118,12 +118,13 @@ module.exports = {
 				.setDescription(`Please confirm if you are done with this modmail. If there is no response <t:${Math.floor(Date.now() / 1000) + 600}:R>, the modmail will be automatically closed.\n\n${pingedUsers}`)
 				.setColor(guildData.embedColor);
 
+			const msg = await interaction.reply({ embeds: [embed], components: [button] });
 
+			await interaction.followUp({ content: `Sent confirmation message`, ephemeral: true });
 			// Create a message collector to wait for the user's response
 			const collector = msg.createMessageComponentCollector({ time: 600000 });
-
 			collector.on('collect', async (interaction) => {
-				await generateTranscript(channel, client);
+				await generateTranscript(interaction, channel, client);
 				await interaction.deferUpdate();
 				await channel.delete();
 			});
@@ -151,6 +152,7 @@ module.exports = {
 
 // new async function called generateTranscript
 async function generateTranscript(interaction, channel, client) {
+	client.logger.log(channel);
 	let messages = [];
 	let lastId;
 	while (true) {

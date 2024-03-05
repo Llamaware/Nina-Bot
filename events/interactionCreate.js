@@ -63,9 +63,12 @@ module.exports = async (client, interaction) => {
 			} else if (random <= 0.30) {
 				// 20% chance
 				chosenQuote = "Seagull eat fish. But fish belong to Mafia. Mafia punch seagull for not respecting Mafia. Seagull say 'No, please! I have child!' Mafia punch seagull with child.";
-			} else if (random <= 0.50) {
-				// 20% chance
+			} else if (random <= 0.40) {
+				// 10% chance
 				chosenQuote = "Sister 'complex'... really? I find it quite simple. - Virus.Dos.OneHalf, 2023";
+			} else if (random <= 0.50) {
+				// 10% chance
+				chosenQuote = "Brother 'complex'... really? I find it quite simple. - Virus.Dos.OneHalf, 2023";
 			} else if (random <= 0.75) {
 				// 25% chance 
 				chosenQuote = "whatever OneHalf's quote is, it's probably better than this one.";
