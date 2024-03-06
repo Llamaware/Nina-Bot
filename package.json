@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "main": "index.js",
   "scripts": {
-    "start": "dotenv -e .env -- node index.js",
+    "start": "node index.js",
     "deploy": "dotenv -e .env node deploy-commands-prod.js",
 	"deploy-dev": "dotenv -e .env node deploy-commands-dev.js",
     "migrate-dev": "dotenv -e .env -- npx prisma migrate dev --name dev",

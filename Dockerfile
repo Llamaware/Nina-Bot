@@ -24,11 +24,8 @@ COPY --chown=node:node Utils/ Utils/
 COPY --chown=node:node deploy-commands-prod.js deploy-commands-prod.js
 COPY --chown=node:node index.js index.js
 
-RUN npm install -g dotenv-cli
 RUN npm install
 RUN npx prisma generate
-
-COPY --chown=node:node .env.prod .env
 
 RUN chown node:node /usr/src/app/
 
