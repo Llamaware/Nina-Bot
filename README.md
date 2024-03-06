@@ -1,4 +1,4 @@
 # Nina-Bot
 
 npm i
-npm test
+npm run start
