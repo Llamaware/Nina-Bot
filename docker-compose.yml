@@ -4,5 +4,5 @@ services:
     build: .
     container_name: ninaBot
     environment:
-      - TOKEN
+      - BOT_TOKEN
       - DATABASE_URL
