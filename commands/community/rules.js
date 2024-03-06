@@ -1,5 +1,3 @@
-//test
-
 const {
 	SlashCommandBuilder,
 	EmbedBuilder,
