@@ -86,10 +86,20 @@ module.exports = {
 			rules.splice(index, 1, rule);
 		}
 
+		// pull the embed color from prisma
+		const guild = await client.guilds.fetch(interaction.guildId);
+		const guildData = await client.db.guild.findUnique({
+			where: {
+				id: guild.id,
+			},
+		});
+		const color = guildData.embedColor;
+
 		// Create an embed for the rules section
 		const newRulesEmbed = new EmbedBuilder()
 			.setTitle('Rules')
 			.setDescription(rules.map((item, i) => `${i + 1}. ${item}`).join('\n'))
+			.setColor(color);
 
 		// Edit the pinned message with the new embed
 		await pinnedMessage.edit({
