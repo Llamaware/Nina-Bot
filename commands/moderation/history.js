@@ -43,8 +43,6 @@ module.exports = {
 			},
 		});
 
-		console.log(notes, warnings, bans);
-
 		const guildData = await client.prisma.guild.findUnique({
 			where: {
 				id: interaction.guild.id,

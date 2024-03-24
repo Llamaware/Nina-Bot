@@ -1,4 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const timezone = require("moment-timezone");
 
 module.exports = {
 	category: "Moderation",
@@ -50,7 +51,40 @@ module.exports = {
 				}
 			});
 
-			await interaction.reply({ content: `Created note for ${target.tag}`, ephemeral: true });
+			//pull notes from db
+			const notes = await client.prisma.note.findMany({
+				where: {
+					userId: target.id
+				}
+			});
+
+			const guildData = await client.prisma.guild.findUnique({
+				where: {
+					id: interaction.guild.id,
+				},
+				select: {
+					embedColor: true,
+				},
+			});
+
+			//create embed
+			const notesEmbed = new EmbedBuilder()
+				.setColor(guildData.embedColor)
+				.setTitle(`Notes for ${target.tag}`)
+
+			if (notes.length === 0) {
+				notesEmbed.setDescription("This user has no notes");
+			} else {
+				notes.forEach((note) => {
+					notesEmbed.addFields(
+						{ name: `ID: ${note.id}`, value: `**Moderator:** ${note.author}\n**Reason:** ${note.reason}\n**Date:** ${timezone(note.createdAt).tz("America/Chicago").format("MM/DD/YYYY hh:mm A")}` }
+					);
+				});
+			}
+
+			await interaction.reply({
+				embeds: [notesEmbed]
+			});
 		}
 
 		if (subcommand === 'edit') {

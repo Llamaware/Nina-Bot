@@ -122,7 +122,7 @@ module.exports = {
 
 			await interaction.followUp({ content: `Sent confirmation message`, ephemeral: true });
 			// Create a message collector to wait for the user's response
-			const collector = msg.createMessageComponentCollector({ time: 600000 });
+			const collector = msg.createMessageComponentCollector({ time: 86400000 });
 			collector.on('collect', async (interaction) => {
 				await generateTranscript(interaction, channel, client);
 				await interaction.deferUpdate();
