@@ -30,6 +30,11 @@ module.exports = {
 			option.setName('transcriptchannel')
 				.setDescription('The channel for ticket transcripts')
 				.addChannelTypes(ChannelType.GuildText)
+				.setRequired(false))
+		.addChannelOption(option =>
+			option.setName('moderationchannel')
+				.setDescription('The channel for moderation logs')
+				.addChannelTypes(ChannelType.GuildText)
 				.setRequired(false)),
 
 	async execute(interaction, client) {
@@ -40,6 +45,7 @@ module.exports = {
 		const ticketCategory = interaction.options.getChannel('ticketcategory');
 		const welcomeChannel = interaction.options.getChannel('welcomechannel');
 		const transcriptChannel = interaction.options.getChannel('transcriptchannel');
+		const moderationChannel = interaction.options.getChannel('moderationchannel');
 
 		// check if they are valid
 		if (embedColor && !embedColor.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)) {
@@ -61,6 +67,7 @@ module.exports = {
 		if (ticketCategory) data.ticketCat = ticketCategory.id;
 		if (welcomeChannel) data.welcChannel = welcomeChannel.id;
 		if (transcriptChannel) data.transcriptChannel = transcriptChannel.id;
+		if (moderationChannel) data.moderationChannel = moderationChannel.id;
 
 		//check if the guild is already in the database
 		const guild = await client.prisma.guild.findUnique({
