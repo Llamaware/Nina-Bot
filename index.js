@@ -44,6 +44,7 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.cooldowns = new Collection();
 client.logger = require('./Utils/logger');
+client.resolver = require('./Utils/resolver');
 client.prisma = prisma;
 
 (async () => {

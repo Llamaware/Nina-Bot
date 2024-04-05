@@ -4,10 +4,6 @@ const {
     PermissionsBitField,
 } = require("discord.js");
 
-const {
-    resolveSequentially,
-} = require('../../utils/resolver.js');
-
 module.exports = {
     category: "Moderation",
     data: new SlashCommandBuilder()
@@ -95,7 +91,7 @@ module.exports = {
                 moderationChannel.send({ embeds: [embed] });
             }
         };
-        const failed = await resolveSequentially(descriptions, callback);
+        const failed = await client.resolver.resolveSequentially(descriptions, callback);
 
         if (failed) {
             interaction.followUp({ content: "An error occurred while trying to kick the user", ephemeral: true });

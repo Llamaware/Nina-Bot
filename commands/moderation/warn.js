@@ -6,10 +6,6 @@ const {
     EmbedBuilder,
 } = require('discord.js');
 
-const {
-    resolveSequentially,
-} = require('../../utils/resolver.js');
-
 const timezone = require('moment-timezone');
 
 function createModerationEmbed({color, verb, creatorId, targetId, warnId}, customDesc = '') {
@@ -128,7 +124,7 @@ module.exports = {
                     desc = `Failed to send warning to <@${targetId}>. Did they block the bot?`;
                 }
             };
-            const failed = await resolveSequentially(descriptions, callback);
+            const failed = await client.resolver.resolveSequentially(descriptions, callback);
 
             if (failed) {
                 interaction.followUp({ content: "An error occurred while trying to warn the user", ephemeral: true });
