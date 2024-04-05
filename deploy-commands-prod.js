@@ -1,7 +1,7 @@
 const { REST, Routes } = require('discord.js');
-require('dotenv').config();
 const token = process.env.BOT_TOKEN;
 const clientId = process.env.clientId;
+const guildId = process.env.GuildId;
 const fs = require("fs");
 
 // import prisma client
@@ -35,7 +35,7 @@ const rest = new REST().setToken(token);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
-			Routes.applicationCommands(clientId),
+			Routes.applicationGuildCommands(clientId, guildId),
 			{ body: commands },
 		);
 

@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const { Client, Collection, Events, GatewayIntentBits, Options } = require("discord.js");
-console.log(process.env.BOT_TOKEN);
 const token = process.env.BOT_TOKEN;
 
 const prisma = new PrismaClient();

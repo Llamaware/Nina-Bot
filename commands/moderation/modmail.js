@@ -115,7 +115,7 @@ module.exports = {
 			// Send the user an embed message with the confirmation button
 			const embed = new EmbedBuilder()
 				.setTitle('Confirm Modmail Closure')
-				.setDescription(`Please confirm if you are done with this modmail. If there is no response <t:${Math.floor(Date.now() / 1000) + 600}:R>, the modmail will be automatically closed.\n\n${pingedUsers}`)
+				.setDescription(`Please confirm if you are done with this modmail. If there is no response <t:${Math.floor(Date.now() / 1000) + 86400}:R>, the modmail will be automatically closed.\n\n${pingedUsers}`)
 				.setColor(guildData.embedColor);
 
 			const msg = await interaction.reply({ embeds: [embed], components: [button] });

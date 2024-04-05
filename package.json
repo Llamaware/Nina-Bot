@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-	"test": "dotenv -e .env node index.js",
+    "test": "dotenv -e .env node index.js",
     "deploy": "dotenv -e .env.prod node deploy-commands-prod.js",
-	"deploy-dev": "dotenv -e .env node deploy-commands-dev.js",
+    "deploy-dev": "dotenv -e .env node deploy-commands-dev.js",
     "migrate-dev": "dotenv -e .env -- npx prisma migrate dev --name dev",
     "migrate-prod": "dotenv -e .env.prod -- npx prisma migrate dev --name prod"
   },
@@ -16,7 +16,7 @@
   "description": "",
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "^5.12.1",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.37.70",
     "discord.js": "^14.14.1",
