@@ -27,8 +27,16 @@ module.exports = {
 				.setCustomId('Tool Developer'),
 			new ButtonBuilder()
 				.setStyle(ButtonStyle.Secondary)
-				.setLabel('Adult Content')
+				.setLabel('Adult Content (18+ only)')
 				.setCustomId('Totally Normal Role'),
+			new ButtonBuilder()
+				.setStyle(ButtonStyle.Secondary)
+				.setLabel('Artist')
+				.setCustomId('Artist'),
+			new ButtonBuilder()
+				.setStyle(ButtonStyle.Secondary)
+				.setLabel('Writer')
+				.setCustomId('Writer'),
 		);
 
 		// pull the color from prisma

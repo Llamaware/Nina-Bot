@@ -2,7 +2,7 @@ const { Events, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, Chan
 module.exports = async (client, interaction) => {
 	if (interaction.isButton()) {
 		// if the customId is "Mod Developer", "Tool Developer", or "Totally Normal Role"
-		if (interaction.customId == "Mod Developer" || interaction.customId == "Tool Developer" || interaction.customId == "Totally Normal Role") {
+		if (interaction.customId == "Mod Developer" || interaction.customId == "Tool Developer" || interaction.customId == "Totally Normal Role" || interaction.customId === "Artist" || interaction.customId === "Writer") {
 			const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
 			if (interaction.member.roles.cache.has(role.id)) {
 				client.logger.log(`Removing the ${role.name} role from ${interaction.user.tag}`, "info");
