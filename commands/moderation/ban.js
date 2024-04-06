@@ -88,7 +88,7 @@ module.exports = {
                 .setDescription(`Failed to send ${banUserDetails} the reason for the ban. Did they block the bot?`)
         },{
             required: true,
-            generator: () => banMember.ban(reason),
+            generator: () => banMember.ban({reason}),
             success: new EmbedBuilder()
                 .setColor(guildData.embedColor)
                 .setDescription(`${banUserDetails} has been banned from the server by ${modDetails}\n**Reason:** ${reason}`),
@@ -106,7 +106,7 @@ module.exports = {
         if (failed) {
             interaction.followUp({ content: "An error occurred while trying to ban the user", ephemeral: true });
         } else {
-            interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
+            interaction.followUp({ embeds: [descriptions.success], ephemeral: true });
         }
     },
 };
