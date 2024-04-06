@@ -78,6 +78,10 @@ module.exports = {
         const banUserDetails = `<@${banUser.id}>`;
         const modDetails = `<@${interaction.user.id}>`;
 
+		const msgEmbed = new EmbedBuilder()
+		.setColor(guildData.embedColor)
+		.setDescription(`${banUserDetails} has been banned from the server by ${modDetails}\n**Reason:** ${reason}`)
+
 
         const descriptions = [{
             required: false,
@@ -106,7 +110,7 @@ module.exports = {
         if (failed) {
             interaction.followUp({ content: "An error occurred while trying to ban the user", ephemeral: true });
         } else {
-            interaction.followUp({ embeds: [descriptions.success], ephemeral: true });
+            interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
         }
     },
 };
