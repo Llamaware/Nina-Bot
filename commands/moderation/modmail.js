@@ -110,7 +110,7 @@ module.exports = {
 			});
 
 			// reply to the interaction ephemeraly, confirming the message was sent
-			
+
 
 			// Send the user an embed message with the confirmation button
 			const embed = new EmbedBuilder()

@@ -9,6 +9,46 @@ module.exports = async (client, interaction) => {
 				await interaction.member.roles.remove(role);
 				await interaction.reply({ content: `Removed the ${role.name} role`, ephemeral: true });
 			} else {
+				//if the role is "Totally Normal Role", check the db
+				if (interaction.customId == "Totally Normal Role") { 
+					//pull adultBan for the user from prisma
+					const userData = await client.prisma.user.findUnique({
+						where: {
+							id: interaction.user.id,
+						},
+						select: {
+							adultBan: true,
+						},
+					});
+
+					if (userData.adultBan) {
+						interaction.reply({
+							content: `You are banned from the ${role.name} role.`,
+							ephemeral: true
+						});
+						
+						//pull the moderation log channel from prisma
+						const guildData = await client.prisma.guild.findUnique({
+							where: {
+								id: interaction.guild.id,
+							},
+							select: {
+								moderationChannel: true,
+							},
+						});
+						const moderationChannel = interaction.guild.channels.cache.get(guildData.moderationChannel);
+
+						//send an alert to the moderation log channel
+						const embed = new EmbedBuilder()
+							.setColor("RED")
+							.setDescription(`${interaction.user.tag} tried to get the ${role.name} role but is banned from it.`);
+						moderationChannel.send({ embeds: [embed] });
+						
+						//return to prevent the role from being added
+						return;
+					}
+				}
+
 				client.logger.log(`Giving the ${role.name} role to ${interaction.user.tag}`, "info");
 				await interaction.member.roles.add(role);
 				await interaction.reply({ content: `Gave you the ${role.name} role`, ephemeral: true });

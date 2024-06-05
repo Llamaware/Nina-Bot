@@ -10,7 +10,7 @@ module.exports = {
 			option.setName('amount')
 				.setDescription("The amount of messages to delete")
 				.setMinValue(1)
-				.setMaxValue(100)
+				.setMaxValue(1000)
 				.setRequired(true))
 		.setDefaultMemberPermissions(PermissionsBitField.ManageMessages),
 	execute: async (interaction, client) => {
@@ -21,7 +21,16 @@ module.exports = {
 
 		let amount = interaction.options.getInteger('amount');
 
-		await interaction.channel.bulkDelete(amount)
+		const deleteCount = Math.floor(amount / 100);
+		const remaining = amount % 100;
+
+		for (let i = 0; i < deleteCount; i++) {
+			await interaction.channel.bulkDelete(100);
+		}
+
+		if (remaining > 0) {
+			await interaction.channel.bulkDelete(remaining);
+		}
 
 		const message = await interaction.reply({ content: `purged ${amount} messages`, ephemeral: true });
 	}
